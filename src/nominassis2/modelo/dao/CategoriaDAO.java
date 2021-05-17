@@ -80,6 +80,14 @@ public class CategoriaDAO {
         return l.get(0);
     }
     
+    public Categorias getCategoriaNombreBD(String nombre){
+        CategoriaDAO.getInstance();
+        Query query = session.createQuery("Select c from Categorias c where c.nombreCategoria=:param1");
+        query.setParameter("param1", nombre);
+        List<Categorias> l = query.list();
+        return l.get(0);
+    }
+    
     public void cerrarSesion() {
         session.close();
     }   

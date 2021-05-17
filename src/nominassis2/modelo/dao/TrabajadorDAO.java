@@ -145,9 +145,9 @@ public class TrabajadorDAO {
     
     private Trabajadorbbdd getTrabajadorBD(int id){
         CategoriaDAO.getInstance();
-        Query query = session.createQuery("Select t from Trabajadorbbdd t where c.idTrabajador=:param1");
+        Query query = session.createQuery("Select t from Trabajadorbbdd t where t.idTrabajador=:param1");
         query.setParameter("param1", id);
-        List<Categorias> l = query.list();
+        List<Trabajadorbbdd> l = query.list();
         return l.get(0);
     }
     

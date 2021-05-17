@@ -30,10 +30,10 @@ import static nominassis2.vista.NominasSIS2.ANSI_RESET;
  * @author diego
  */
 public class PracticaTres {
-    
-    public PracticaTres() { 
+
+    public PracticaTres() {
     }
-    
+
     public LinkedList<Nomina> practicaTres(File excel, Date fch) throws IOException {
         LinkedList<Nomina> listaDeNominas = new LinkedList<>();
         CoordinadorNominas nominas = new CoordinadorNominas();
@@ -64,7 +64,9 @@ public class PracticaTres {
                 salarioCalculos = brutoMensual + nominas.calcularProrrateo(salarioBase, complemento, importeTrienios, true);
             }
             if (fechaNomina.getMonthValue() == 12 || fechaNomina.getMonthValue() == 6) {
-                if(!trabajador.isProrrateo()) esExtra = "Sí";
+                if (!trabajador.isProrrateo()) {
+                    esExtra = "Sí";
+                }
             }
             double porcentajeSeguridadSocial = nominas.calcularSeguridadSocial(excel);
             double seguridadSocial = salarioCalculos * (porcentajeSeguridadSocial / 100);
@@ -91,10 +93,10 @@ public class PracticaTres {
             double costeTotal = brutoMensual + totalEmpresario;
 
             Nomina nomina = new Nomina(++counter, trabajador, fechaNomina.getMonthValue(), fechaNomina.getYear(),
-                    numTrienios, importeTrienios, salarioBase, complemento, prorrateo, brutoAnual, porcentajeIRPF, irpf, salarioCalculos, porcentajeSeguridadSocialEmpresario,
-                    seguridadSocialEmpresario, porcentajeDesempleoEmpresario, desempleoEmpresario, porcentajeFormacionEmpresario, formacionEmpresario, porcentajeAccidentes, accidentes,
-                    porcentajeFogasa, fogasa, porcentajeSeguridadSocial, seguridadSocial, porcentajeDesempleo, desempleo, porcentajeFormacion, formacion, brutoMensual, liquidoPercibir,
-                    costeTotal);
+                    numTrienios, importeTrienios, Utils.round2decimasl(salarioBase), Utils.round2decimasl(complemento), Utils.round2decimasl(prorrateo), brutoAnual, porcentajeIRPF, Utils.round2decimasl(irpf), Utils.round2decimasl(salarioCalculos), porcentajeSeguridadSocialEmpresario,
+                    Utils.round2decimasl(seguridadSocialEmpresario), porcentajeDesempleoEmpresario, Utils.round2decimasl(desempleoEmpresario), porcentajeFormacionEmpresario, Utils.round2decimasl(formacionEmpresario), porcentajeAccidentes, Utils.round2decimasl(accidentes),
+                    porcentajeFogasa, Utils.round2decimasl(fogasa), porcentajeSeguridadSocial, Utils.round2decimasl(seguridadSocial), porcentajeDesempleo, Utils.round2decimasl(desempleo), porcentajeFormacion, Utils.round2decimasl(formacion), Utils.round2decimasl(brutoMensual), Utils.round2decimasl(liquidoPercibir),
+                    Utils.round2decimasl(costeTotal));
             listaDeNominas.add(nomina);
             //printInfor(nomina, fch, "No", salarioCalculos);
             if (esExtra.equals("Sí")) {
@@ -112,13 +114,13 @@ public class PracticaTres {
                 totalEmpresario = seguridadSocialEmpresario + desempleoEmpresario + formacionEmpresario + accidentes + fogasa;
                 costeTotal = brutoMensual + totalEmpresario;
                 Nomina nominaExtra = new Nomina(++counter, trabajador, fechaNomina.getMonthValue(), fechaNomina.getYear(),
-                        numTrienios, importeTrienios, salarioBase, complemento, prorrateo, brutoAnual, porcentajeIRPF, irpf, salarioCalculos, porcentajeSeguridadSocialEmpresario,
-                        seguridadSocialEmpresario, porcentajeDesempleoEmpresario, desempleoEmpresario, porcentajeFormacionEmpresario, formacionEmpresario, porcentajeAccidentes, accidentes,
-                        porcentajeFogasa, fogasa, porcentajeSeguridadSocial, seguridadSocial, porcentajeDesempleo, desempleo, porcentajeFormacion, formacion, brutoMensual, liquidoPercibir,
-                        costeTotal);
+                    numTrienios, importeTrienios, Utils.round2decimasl(salarioBase), Utils.round2decimasl(complemento), Utils.round2decimasl(prorrateo), brutoAnual, porcentajeIRPF, Utils.round2decimasl(irpf), Utils.round2decimasl(salarioCalculos), porcentajeSeguridadSocialEmpresario,
+                    Utils.round2decimasl(seguridadSocialEmpresario), porcentajeDesempleoEmpresario, Utils.round2decimasl(desempleoEmpresario), porcentajeFormacionEmpresario, Utils.round2decimasl(formacionEmpresario), porcentajeAccidentes, Utils.round2decimasl(accidentes),
+                    porcentajeFogasa, Utils.round2decimasl(fogasa), porcentajeSeguridadSocial, Utils.round2decimasl(seguridadSocial), porcentajeDesempleo, Utils.round2decimasl(desempleo), porcentajeFormacion, Utils.round2decimasl(formacion), Utils.round2decimasl(brutoMensual), Utils.round2decimasl(liquidoPercibir),
+                    Utils.round2decimasl(costeTotal));
                 listaDeNominas.add(nominaExtra);
                 //printInfor(nominaExtra, fch, esExtra, 0.0);
-            }       
+            }
         }
         return listaDeNominas;
     }

@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
+import java.util.List;
 import nominassis2.controlador.Coordinador;
 import nominassis2.controlador.CoordinadorExcel;
 import nominassis2.exceptions.ObjectNotFoundException;
@@ -48,13 +49,13 @@ import nominassis2.utils.Utils;
  * @author diego
  */
 public class PracticaCuatro {
-    
+
     public PracticaCuatro() {
 
     }
 
     public void practicaCuatro(LinkedList<Nomina> listaNominas, String fecha, File excel) throws FileNotFoundException, MalformedURLException, ObjectNotFoundException, IOException {
-        
+
         /**
          * PARTE 1.
          */
@@ -67,7 +68,7 @@ public class PracticaCuatro {
                 esExtra = true;
             }
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-            PdfWriter writer = new PdfWriter("./recursos/nominas/"+getNombrePdf(nomina, esExtra)+".pdf");
+            PdfWriter writer = new PdfWriter("./recursos/nominas/" + getNombrePdf(nomina, esExtra) + ".pdf");
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document doc = new Document(pdfDoc, PageSize.LETTER);
             Table tabla1 = new Table(2);
@@ -194,7 +195,6 @@ public class PracticaCuatro {
             cell6.setWidth(120);
             tabla5.addCell(cell6);
 
-            
             Cell cell7 = new Cell();
             cell7.add(new Paragraph("Imp. Unitario").setBorderBottom(new SolidBorder(ColorConstants.BLACK, 1)));
             cell7.add(new Paragraph(String.valueOf(df.format(nomina.getImporteSalarioMes() / 30))));
@@ -360,42 +360,44 @@ public class PracticaCuatro {
          */
         ejercicio2(listaNominas, excel);
     }
-    
-    private void ejercicio2(LinkedList<Nomina> listaNominas, File excel) throws IOException{
-        /* PREGUNTAR DUDA ID EMPRESA RANDOM */
+
+    private void ejercicio2(LinkedList<Nomina> listaNominas, File excel) throws IOException {
         DecimalFormat df = new DecimalFormat("0.00");
         int idEmpresa = 23;
-        int idCategoria = 32;
         int idTrabajador = 15;
+
+        // PARTE CATEGORIAS
+        LinkedList<Categorias> catesExcel = CoordinadorExcel.getCoordinadorExcel().obtenerCategorias(excel);
+        for (Categorias categoria : catesExcel) {
+            if (!Coordinador.getCoordinador().buscarCategoria(categoria)) {
+                Coordinador.getCoordinador().addCategoria(categoria);
+            } else {
+                Coordinador.getCoordinador().actualizarCategoria(categoria);
+            }
+        }
+
+        
         for (Nomina nomina : listaNominas) {
-            int i = 0;
+            // PARTE EMPRESAS
             Empresas empresa = new Empresas();
             empresa.setCif(nomina.getTrabajadorbbdd().getCifEmpresa());
             empresa.setNombre(nomina.getTrabajadorbbdd().getNombreEmpresa());
             if (!Coordinador.getCoordinador().buscarEmpresa(empresa)) {
-               empresa.setIdEmpresa(idEmpresa);
-               Coordinador.getCoordinador().addEmpresa(empresa);
-               idEmpresa++;
-            }else{
-                //Coordinador.getCoordinador().actualizarEmpresa(empresa);
+                empresa.setIdEmpresa(idEmpresa++);
+                Coordinador.getCoordinador().addEmpresa(empresa);
+            } else {
+                Coordinador.getCoordinador().actualizarEmpresa(empresa);
             }
-            
-           LinkedList<Categorias> catesExcel = CoordinadorExcel.getCoordinadorExcel().obtenerCategorias(excel);
-           
-            for (Categorias categoria : catesExcel) {
-                if(!Coordinador.getCoordinador().buscarCategoria(categoria)){
-                    Coordinador.getCoordinador().addCategoria(categoria);
-                }else{
-                    Coordinador.getCoordinador().actualizarCategoria(categoria);
-                }
-            }
-                
-            
-            
+        }
+        List<Empresas> empresasBD = Coordinador.getCoordinador().getEmpresas();
+        
+        for (Nomina nomina : listaNominas) {
+
+            // PARTE TRABAJADOR
             Trabajadorbbdd trabajador = new Trabajadorbbdd();
             trabajador.setNombre(nomina.getTrabajadorbbdd().getNombre());
             trabajador.setApellido1(nomina.getTrabajadorbbdd().getApellido1());
-            if(nomina.getTrabajadorbbdd().getApellido2()!=null) {
+            if (nomina.getTrabajadorbbdd().getApellido2() != null) {
                 trabajador.setApellido2(nomina.getTrabajadorbbdd().getApellido2());
             }
             trabajador.setNifnie(nomina.getTrabajadorbbdd().getNifnie());
@@ -403,30 +405,33 @@ public class PracticaCuatro {
             trabajador.setFechaAlta(nomina.getTrabajadorbbdd().getFechaAlta());
             trabajador.setCodigoCuenta(nomina.getTrabajadorbbdd().getCodigoCuenta());
             trabajador.setIban(nomina.getTrabajadorbbdd().getIban());
-            trabajador.setEmpresas(empresa);
-            trabajador.setCategorias(catesExcel.get(0));
-            if(!Coordinador.getCoordinador().buscarTrabajador(trabajador)) {
-                trabajador.setIdTrabajador(idTrabajador);
-                idTrabajador++;
+            trabajador.setEmpresas(getEmpresa(empresasBD, nomina.getTrabajadorbbdd().getCifEmpresa()));
+
+            trabajador.setCategorias(Coordinador.getCoordinador().getCategoria(nomina.getTrabajadorbbdd().getCategoria()));
+            if (!Coordinador.getCoordinador().buscarTrabajador(trabajador)) {
+                trabajador.setIdTrabajador(idTrabajador++);
                 Coordinador.getCoordinador().addTrabajador(trabajador);
-            }else{
+            } else {
                 Coordinador.getCoordinador().actualizarTrabajador(trabajador);
             }
-            
+        }
+        
+        for(Nomina nomina : listaNominas){
+            // PARTE NOMINAS
             nomina.setTrabajadorbbdd(trabajador);
-            if(!Coordinador.getCoordinador().buscarNomina(nomina)) {
+            if (!Coordinador.getCoordinador().buscarNomina(nomina)) {
                 Coordinador.getCoordinador().addNomina(nomina);
-            }else{
+            } else {
                 Coordinador.getCoordinador().actualizarNomina(nomina);
             }
-            i++;
         }
+
         EmpresasDAO.getInstance().cerrarSesion();
         CategoriaDAO.getInstance().cerrarSesion();
         TrabajadorDAO.getInstance().cerrarSesion();
         NominaDAO.getInstance().cerrarSesion();
     }
-    
+
     public static String getNombrePdf(Nomina nomina, boolean extra) {
         Trabajadorbbdd trabajador = nomina.getTrabajadorbbdd();
         String resultado = "";
@@ -444,5 +449,14 @@ public class PracticaCuatro {
             resultado += "EXTRA";
         }
         return resultado;
+    }
+    
+    private Empresas getEmpresa(List<Empresas> empresas, String cif){
+        for (Empresas empresa : empresas) {
+            if (empresa.getCif().equals(cif)) {
+                return empresa;
+            }
+        }
+        return null;
     }
 }

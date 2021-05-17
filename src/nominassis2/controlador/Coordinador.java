@@ -134,4 +134,12 @@ public class Coordinador {
         Logic.getLogic().actualizarNomina(nomina);
     }
 
+    public Categorias getCategoria(String nombre) {
+        return Logic.getLogic().getCategoria(nombre);
+    }
+
+    public List<Empresas> getEmpresas() throws ObjectNotFoundException {
+        return Logic.getLogic().getEmpresas();
+    }
+
 }

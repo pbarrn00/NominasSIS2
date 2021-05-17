@@ -83,6 +83,27 @@ public class EmpresasDAO {
         }
         return results;
     }
+    
+    public List getListaEmpresasBD() throws ObjectNotFoundException, ExceptionInInitializerError {
+        EmpresasDAO.getInstance();;
+        List<Trabajadorbbdd> results;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Empresas E";
+            Query query = session.createQuery(hql);
+            results = query.list();
+            if (results.isEmpty()) {
+                throw new ObjectNotFoundException("No hay ninguna empresa en la base de datos");
+            }
+            tx.commit();
+        } catch (ExceptionInInitializerError e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        }
+        return results;
+    }
 
     public boolean existeEmpresa(Empresas e) {
         EmpresasDAO.getInstance();
@@ -115,16 +136,16 @@ public class EmpresasDAO {
             aux.setNombre(empresa.getNombre());
             aux.setCif(empresa.getCif());
             tx = session.beginTransaction();
-            session.saveOrUpdate(empresa);
+            session.saveOrUpdate(aux);
             tx.commit();
         }
     }
     
     private Empresas getEmpresaBD(int id){
         CategoriaDAO.getInstance();
-        Query query = session.createQuery("Select e from Empresas e where c.idEmpresa=:param1");
+        Query query = session.createQuery("Select e from Empresas e where e.idEmpresa=:param1");
         query.setParameter("param1", id);
-        List<Categorias> l = query.list();
+        List<Empresas> l = query.list();
         return l.get(0);
     }
     

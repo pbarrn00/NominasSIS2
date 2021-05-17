@@ -125,6 +125,14 @@ public class Logic {
     public void actualizarNomina(Nomina nomina) {
         NominaDAO.getInstance().update(nomina);
     }
+
+    public Categorias getCategoria(String nombre) {
+        return CategoriaDAO.getInstance().getCategoriaNombreBD(nombre);
+    }
+
+    public List<Empresas> getEmpresas() throws ObjectNotFoundException {
+        return EmpresasDAO.getInstance().getListaEmpresasBD();
+    }
     
     
 
