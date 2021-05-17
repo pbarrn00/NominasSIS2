@@ -142,4 +142,8 @@ public class Coordinador {
         return Logic.getLogic().getEmpresas();
     }
 
+    public List<Trabajadorbbdd> getTrabajadores() throws ObjectNotFoundException {
+        return Logic.getLogic().getTrabajadores();
+    }
+
 }

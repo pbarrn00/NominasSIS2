@@ -106,7 +106,7 @@ public class TrabajadorDAO {
         }
     }
     
-    public List getListaTrabajadorBD() throws ObjectNotFoundException, ExceptionInInitializerError {
+    public List getListaTrabajadorBD() throws ExceptionInInitializerError {
         TrabajadorDAO.getInstance();
         List<Trabajadorbbdd> results;
         try {
@@ -114,9 +114,6 @@ public class TrabajadorDAO {
             String hql = "FROM Trabajadorbbdd T";
             Query query = session.createQuery(hql);
             results = query.list();
-            if (results.isEmpty()) {
-                throw new ObjectNotFoundException("No hay ninguna empresa en la base de datos");
-            }
             tx.commit();
         } catch (ExceptionInInitializerError e) {
             if (tx != null) {
@@ -133,7 +130,7 @@ public class TrabajadorDAO {
         query.setParameter("param1", trabajador.getNifnie());
         List<Trabajadorbbdd> l = query.list();
         for(int i=0; i<l.size(); i++) {
-            if(l.get(i).getNombre()==trabajador.getNombre() && l.get(i).getFechaAlta()==trabajador.getFechaAlta()){
+            if(l.get(i).getNombre().equals(trabajador.getNombre()) && l.get(i).getFechaAlta().equals(trabajador.getFechaAlta())){
                 trabajador.setIdTrabajador(l.get(0).getIdTrabajador());
                 return true;
             }

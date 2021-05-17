@@ -359,6 +359,7 @@ public class PracticaCuatro {
          * PARTE 2.
          */
         ejercicio2(listaNominas, excel);
+        System.out.println("Blablacar: " + listaNominas.size());
     }
 
     private void ejercicio2(LinkedList<Nomina> listaNominas, File excel) throws IOException {
@@ -376,7 +377,6 @@ public class PracticaCuatro {
             }
         }
 
-        
         for (Nomina nomina : listaNominas) {
             // PARTE EMPRESAS
             Empresas empresa = new Empresas();
@@ -390,7 +390,11 @@ public class PracticaCuatro {
             }
         }
         List<Empresas> empresasBD = Coordinador.getCoordinador().getEmpresas();
-        
+
+        List<Trabajadorbbdd> trabajadoresBD = Coordinador.getCoordinador().getTrabajadores();
+        if (!trabajadoresBD.isEmpty()) {
+            idTrabajador = trabajadoresBD.get(trabajadoresBD.size()-1).getIdTrabajador();
+        }
         for (Nomina nomina : listaNominas) {
 
             // PARTE TRABAJADOR
@@ -415,10 +419,11 @@ public class PracticaCuatro {
                 Coordinador.getCoordinador().actualizarTrabajador(trabajador);
             }
         }
-        
-        for(Nomina nomina : listaNominas){
+
+        trabajadoresBD = Coordinador.getCoordinador().getTrabajadores();
+        for (Nomina nomina : listaNominas) {
             // PARTE NOMINAS
-            nomina.setTrabajadorbbdd(trabajador);
+            nomina.setTrabajadorbbdd(getTrabajador(trabajadoresBD, nomina.getTrabajadorbbdd().getNifnie()));
             if (!Coordinador.getCoordinador().buscarNomina(nomina)) {
                 Coordinador.getCoordinador().addNomina(nomina);
             } else {
@@ -450,11 +455,20 @@ public class PracticaCuatro {
         }
         return resultado;
     }
-    
-    private Empresas getEmpresa(List<Empresas> empresas, String cif){
+
+    private Empresas getEmpresa(List<Empresas> empresas, String cif) {
         for (Empresas empresa : empresas) {
             if (empresa.getCif().equals(cif)) {
                 return empresa;
+            }
+        }
+        return null;
+    }
+
+    private Trabajadorbbdd getTrabajador(List<Trabajadorbbdd> trabajadores, String nif) {
+        for (Trabajadorbbdd trabajador : trabajadores) {
+            if (trabajador.getNifnie().equals(nif)) {
+                return trabajador;
             }
         }
         return null;

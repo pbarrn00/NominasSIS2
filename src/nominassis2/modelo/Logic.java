@@ -133,6 +133,10 @@ public class Logic {
     public List<Empresas> getEmpresas() throws ObjectNotFoundException {
         return EmpresasDAO.getInstance().getListaEmpresasBD();
     }
+
+    public List<Trabajadorbbdd> getTrabajadores() throws ObjectNotFoundException{
+        return TrabajadorDAO.getInstance().getListaTrabajadorBD();
+    }
     
     
 
