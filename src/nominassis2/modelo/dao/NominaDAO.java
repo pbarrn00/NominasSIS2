@@ -73,9 +73,51 @@ public class NominaDAO {
     
     public void update(Nomina nomina) {
         NominaDAO.getInstance();
-        tx = session.beginTransaction();
-        session.saveOrUpdate(nomina);
-        tx.commit();
+        Nomina aux = getNominaBD(nomina.getIdNomina());
+        if(nomina.equals(aux)) {
+            tx = session.beginTransaction();
+            session.saveOrUpdate(actualizarNomina(nomina, aux));
+            tx.commit();
+        }
+    }
+    
+    private Nomina getNominaBD(int id){
+        CategoriaDAO.getInstance();
+        Query query = session.createQuery("Select n from Nomina n where n.idNomina=:param1");
+        query.setParameter("param1", id);
+        List<Nomina> l = query.list();
+        return l.get(0);
+    }
+    
+    private Nomina actualizarNomina(Nomina nomina, Nomina aux) {
+        aux.setNumeroTrienios(nomina.getNumeroTrienios());
+        aux.setImporteTrienios(nomina.getImporteTrienios());
+        aux.setImporteSalarioMes(nomina.getImporteSalarioMes());
+        aux.setImporteComplementoMes(nomina.getImporteComplementoMes());
+        aux.setValorProrrateo(nomina.getValorProrrateo());
+        aux.setBrutoAnual(nomina.getBrutoAnual());
+        aux.setIrpf(nomina.getIrpf());
+        aux.setImporteIrpf(nomina.getIrpf());
+        aux.setBaseEmpresario(nomina.getBaseEmpresario());
+        aux.setSeguridadSocialEmpresario(nomina.getSeguridadSocialEmpresario());
+        aux.setImporteSeguridadSocialEmpresario(nomina.getImporteSeguridadSocialEmpresario());
+        aux.setDesempleoEmpresario(nomina.getDesempleoEmpresario());
+        aux.setImporteDesempleoEmpresario(nomina.getImporteDesempleoEmpresario());
+        aux.setFormacionEmpresario(nomina.getFormacionEmpresario());
+        aux.setImporteFormacionEmpresario(nomina.getImporteFormacionEmpresario());
+        aux.setAccidentesTrabajoEmpresario(nomina.getAccidentesTrabajoEmpresario());
+        aux.setImporteAccidentesTrabajoEmpresario(nomina.getImporteAccidentesTrabajoEmpresario());
+        aux.setFogasaempresario(nomina.getFogasaempresario());
+        aux.setImporteFogasaempresario(nomina.getImporteFogasaempresario());
+        aux.setSeguridadSocialTrabajador(nomina.getSeguridadSocialTrabajador());
+        aux.setImporteSeguridadSocialTrabajador(nomina.getImporteSeguridadSocialTrabajador());
+        aux.setDesempleoTrabajador(nomina.getDesempleoTrabajador());
+        aux.setImporteDesempleoTrabajador(nomina.getImporteDesempleoTrabajador());
+        aux.setFormacionTrabajador(nomina.getFormacionTrabajador());
+        aux.setImporteFormacionTrabajador(nomina.getImporteFormacionTrabajador());
+        aux.setCosteTotalEmpresario(nomina.getCosteTotalEmpresario());
+        aux.setTrabajadorbbdd(aux.getTrabajadorbbdd());
+        return aux;
     }
     
     public void cerrarSesion() {
