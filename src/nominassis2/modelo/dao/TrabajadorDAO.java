@@ -134,9 +134,33 @@ public class TrabajadorDAO {
     
     public void update(Trabajadorbbdd trabajador) {
         TrabajadorDAO.getInstance();
-        tx = session.beginTransaction();
-        session.saveOrUpdate(trabajador);
-        tx.commit();
+        Trabajadorbbdd aux = getTrabajadorBD(trabajador.getIdTrabajador());
+        if(!trabajador.equals(aux)) {
+            tx = session.beginTransaction();
+            session.saveOrUpdate(actualizarTrabajador(trabajador, aux));
+            tx.commit(); 
+        }
+        
+    }
+    
+    private Trabajadorbbdd getTrabajadorBD(int id){
+        CategoriaDAO.getInstance();
+        Query query = session.createQuery("Select t from Trabajadorbbdd t where c.idTrabajador=:param1");
+        query.setParameter("param1", id);
+        List<Categorias> l = query.list();
+        return l.get(0);
+    }
+    
+    private Trabajadorbbdd actualizarTrabajador(Trabajadorbbdd trabajador, Trabajadorbbdd aux) {
+        aux.setApellido1(trabajador.getApellido1());
+        aux.setApellido2(trabajador.getApellido2());
+        aux.setNifnie(trabajador.getNifnie());
+        aux.setEmail(trabajador.getEmail());
+        aux.setCodigoCuenta(trabajador.getCodigoCuenta());
+        aux.setIban(trabajador.getIban());
+        aux.setEmpresas(trabajador.getEmpresas());
+        aux.setCategorias(trabajador.getCategorias());
+        return aux;
     }
     
     public void cerrarSesion() {
