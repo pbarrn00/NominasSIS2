@@ -2,6 +2,7 @@ package nominassis2.modelo.vo;
 // Generated 12-mar-2021 17:34:57 by Hibernate Tools 4.3.1
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -61,5 +62,34 @@ public class Empresas implements java.io.Serializable {
     public void setTrabajadorbbdds(Set trabajadorbbdds) {
         this.trabajadorbbdds = trabajadorbbdds;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Empresas other = (Empresas) obj;
+        if (this.idEmpresa != other.idEmpresa) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.cif, other.cif)) {
+            return false;
+        }
+        if (!Objects.equals(this.trabajadorbbdds, other.trabajadorbbdds)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 
 }

@@ -124,7 +124,7 @@ public class Coordinador {
 
     public void actualizarCategoria(Categorias categoria) {
         Logic.getLogic().actualizarEmpresas(categoria);
-    }
+    } 
 
     public void actualizarTrabajador(Trabajadorbbdd trabajador) {
         Logic.getLogic().actualizarTrabajador(trabajador);

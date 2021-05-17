@@ -35,7 +35,7 @@ public class NominasSIS2 {
     
     public static void main(String[] args) {
         
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
+        //java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
         try {
             File excel = new File("recursos/SistemasInformacionII.xlsx");
             /**
@@ -45,7 +45,7 @@ public class NominasSIS2 {
             /**
              * Practica 2
              */
-            //new PracticaDos().practicaDos(excel);
+            new PracticaDos().practicaDos(excel);
             /**
              * Practica 3
              */
@@ -64,7 +64,7 @@ public class NominasSIS2 {
             /**
              * Practica 4
              */
-            new PracticaCuatro().practicaCuatro(listaNominas, fecha);
+            new PracticaCuatro().practicaCuatro(listaNominas, fecha, excel);
 
         } catch (ObjectNotFoundException e) {
             System.out.println(e);

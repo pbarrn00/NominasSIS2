@@ -23,12 +23,15 @@ import com.itextpdf.layout.element.TabStop;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TabAlignment;
 import com.itextpdf.layout.property.TextAlignment;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import nominassis2.controlador.Coordinador;
+import nominassis2.controlador.CoordinadorExcel;
 import nominassis2.exceptions.ObjectNotFoundException;
 import nominassis2.modelo.dao.CategoriaDAO;
 import nominassis2.modelo.dao.EmpresasDAO;
@@ -50,7 +53,7 @@ public class PracticaCuatro {
 
     }
 
-    public void practicaCuatro(LinkedList<Nomina> listaNominas, String fecha) throws FileNotFoundException, MalformedURLException, ObjectNotFoundException {
+    public void practicaCuatro(LinkedList<Nomina> listaNominas, String fecha, File excel) throws FileNotFoundException, MalformedURLException, ObjectNotFoundException, IOException {
         
         /**
          * PARTE 1.
@@ -355,16 +358,17 @@ public class PracticaCuatro {
         /**
          * PARTE 2.
          */
-        ejercicio2(listaNominas);
+        ejercicio2(listaNominas, excel);
     }
     
-    private void ejercicio2(LinkedList<Nomina> listaNominas){
+    private void ejercicio2(LinkedList<Nomina> listaNominas, File excel) throws IOException{
         /* PREGUNTAR DUDA ID EMPRESA RANDOM */
         DecimalFormat df = new DecimalFormat("0.00");
         int idEmpresa = 23;
         int idCategoria = 32;
         int idTrabajador = 15;
         for (Nomina nomina : listaNominas) {
+            int i = 0;
             Empresas empresa = new Empresas();
             empresa.setCif(nomina.getTrabajadorbbdd().getCifEmpresa());
             empresa.setNombre(nomina.getTrabajadorbbdd().getNombreEmpresa());
@@ -376,17 +380,17 @@ public class PracticaCuatro {
                 //Coordinador.getCoordinador().actualizarEmpresa(empresa);
             }
             
-            Categorias categoria = new Categorias();
-            categoria.setNombreCategoria(nomina.getTrabajadorbbdd().getCategoria());
-            categoria.setSalarioBaseCategoria(Utils.round2decimasl(nomina.getImporteSalarioMes()*14));
-            categoria.setComplementoCategoria(Utils.round2decimasl(nomina.getImporteComplementoMes()*14));
-            if(!Coordinador.getCoordinador().buscarCategoria(categoria)) {
-                categoria.setIdCategoria(idCategoria);
-                idCategoria++;
-                Coordinador.getCoordinador().addCategoria(categoria);
-            }else{
-                Coordinador.getCoordinador().actualizarCategoria(categoria);
+           LinkedList<Categorias> catesExcel = CoordinadorExcel.getCoordinadorExcel().obtenerCategorias(excel);
+           
+            for (Categorias categoria : catesExcel) {
+                if(!Coordinador.getCoordinador().buscarCategoria(categoria)){
+                    Coordinador.getCoordinador().addCategoria(categoria);
+                }else{
+                    Coordinador.getCoordinador().actualizarCategoria(categoria);
+                }
             }
+                
+            
             
             Trabajadorbbdd trabajador = new Trabajadorbbdd();
             trabajador.setNombre(nomina.getTrabajadorbbdd().getNombre());
@@ -400,7 +404,7 @@ public class PracticaCuatro {
             trabajador.setCodigoCuenta(nomina.getTrabajadorbbdd().getCodigoCuenta());
             trabajador.setIban(nomina.getTrabajadorbbdd().getIban());
             trabajador.setEmpresas(empresa);
-            trabajador.setCategorias(categoria);
+            trabajador.setCategorias(catesExcel.get(0));
             if(!Coordinador.getCoordinador().buscarTrabajador(trabajador)) {
                 trabajador.setIdTrabajador(idTrabajador);
                 idTrabajador++;
@@ -415,6 +419,7 @@ public class PracticaCuatro {
             }else{
                 Coordinador.getCoordinador().actualizarNomina(nomina);
             }
+            i++;
         }
         EmpresasDAO.getInstance().cerrarSesion();
         CategoriaDAO.getInstance().cerrarSesion();

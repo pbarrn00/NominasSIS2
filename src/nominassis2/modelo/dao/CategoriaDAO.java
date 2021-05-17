@@ -61,9 +61,23 @@ public class CategoriaDAO {
     
     public void update(Categorias categoria) {
         CategoriaDAO.getInstance();
-        tx = session.beginTransaction();
-        session.saveOrUpdate(categoria);
-        tx.commit();
+        Categorias aux = getCategoriaBD(categoria.getIdCategoria());
+        if (!categoria.equals(aux)) {
+            aux.setSalarioBaseCategoria(categoria.getSalarioBaseCategoria());
+            aux.setComplementoCategoria(categoria.getComplementoCategoria());
+            tx = session.beginTransaction();
+            session.saveOrUpdate(aux);
+            tx.commit();
+        }
+        
+    }
+    
+    private Categorias getCategoriaBD(int id){
+        CategoriaDAO.getInstance();
+        Query query = session.createQuery("Select c from Categorias c where c.idCategoria=:param1");
+        query.setParameter("param1", id);
+        List<Categorias> l = query.list();
+        return l.get(0);
     }
     
     public void cerrarSesion() {

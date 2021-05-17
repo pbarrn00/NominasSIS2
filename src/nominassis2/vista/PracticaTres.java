@@ -90,7 +90,6 @@ public class PracticaTres {
             double totalEmpresario = seguridadSocialEmpresario + desempleoEmpresario + formacionEmpresario + accidentes + fogasa;
             double costeTotal = brutoMensual + totalEmpresario;
 
-            //totalEmpresario, deducciones
             Nomina nomina = new Nomina(++counter, trabajador, fechaNomina.getMonthValue(), fechaNomina.getYear(),
                     numTrienios, importeTrienios, salarioBase, complemento, prorrateo, brutoAnual, porcentajeIRPF, irpf, salarioCalculos, porcentajeSeguridadSocialEmpresario,
                     seguridadSocialEmpresario, porcentajeDesempleoEmpresario, desempleoEmpresario, porcentajeFormacionEmpresario, formacionEmpresario, porcentajeAccidentes, accidentes,

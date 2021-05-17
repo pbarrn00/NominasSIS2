@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import nominassis2.modelo.vo.Categorias;
 import nominassis2.modelo.vo.Trabajadorbbdd;
 import nominassis2.utils.Utils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -34,6 +35,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author pablo
  */
+
+
 public class CoordinadorExcel {
 
     private XSSFWorkbook libro;
@@ -46,7 +49,25 @@ public class CoordinadorExcel {
 
     private Cell celda;
 
-    public CoordinadorExcel() {
+    /**
+     * Instancia propia de la clase
+     */
+    private static CoordinadorExcel instancia;
+    
+    public CoordinadorExcel() {}
+    
+    /**
+     * Devuelve una instancia del Coordinador del contexto actual de la
+     * aplicacion
+     *
+     * @return una instancia del Coordinador del contexto actual de la
+     * aplicacion
+     */
+    public static CoordinadorExcel getCoordinadorExcel() {
+        if (instancia == null) {
+            instancia = new CoordinadorExcel();
+        }
+        return instancia;
     }
 
     public void comprobarNif(File excel) throws IOException, InvalidFormatException {
@@ -301,5 +322,24 @@ public class CoordinadorExcel {
             fila = filaIterador.next();
         }
         return fila.getCell(6).getNumericCellValue();
+    }
+    
+    public LinkedList<Categorias> obtenerCategorias(File excel) throws FileNotFoundException, IOException{
+        
+        LinkedList<Categorias> categoriasExcel = new LinkedList<>();
+        int counter = 32;
+        
+        InputStream inp = new FileInputStream(excel);
+        libro = new XSSFWorkbook(inp);
+        hoja = libro.getSheetAt(0);
+        filaIterador = hoja.iterator();
+        filaIterador.next();
+        while (filaIterador.hasNext()) {
+            fila = filaIterador.next();
+            if(fila.getCell(0) == null) break;
+            categoriasExcel.add(new Categorias(counter++, fila.getCell(0).toString(), fila.getCell(1).getNumericCellValue(), fila.getCell(2).getNumericCellValue()));
+        }
+        
+        return categoriasExcel;
     }
 }
