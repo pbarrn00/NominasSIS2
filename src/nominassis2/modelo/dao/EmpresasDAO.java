@@ -10,6 +10,7 @@ import java.util.List;
 
 import nominassis2.exceptions.ObjectNotFoundException;
 import nominassis2.modelo.HibernateUtil;
+import nominassis2.modelo.vo.Categorias;
 import nominassis2.modelo.vo.Empresas;
 import nominassis2.modelo.vo.Trabajadorbbdd;
 import org.hibernate.Query;
@@ -109,9 +110,22 @@ public class EmpresasDAO {
     
     public void update(Empresas empresa) {
         EmpresasDAO.getInstance();
-        tx = session.beginTransaction();
-        session.saveOrUpdate(empresa);
-        tx.commit();
+        Empresas aux = getEmpresaBD(empresa.getIdEmpresa());
+        if(!empresa.equals(aux)){
+            aux.setNombre(empresa.getNombre());
+            aux.setCif(empresa.getCif());
+            tx = session.beginTransaction();
+            session.saveOrUpdate(empresa);
+            tx.commit();
+        }
+    }
+    
+    private Empresas getEmpresaBD(int id){
+        CategoriaDAO.getInstance();
+        Query query = session.createQuery("Select e from Empresas e where c.idEmpresa=:param1");
+        query.setParameter("param1", id);
+        List<Categorias> l = query.list();
+        return l.get(0);
     }
     
     public void cerrarSesion() {
