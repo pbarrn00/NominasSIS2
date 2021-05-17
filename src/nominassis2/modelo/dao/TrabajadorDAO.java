@@ -105,6 +105,27 @@ public class TrabajadorDAO {
             session.close();
         }
     }
+    
+    public List getListaTrabajadorBD() throws ObjectNotFoundException, ExceptionInInitializerError {
+        TrabajadorDAO.getInstance();
+        List<Trabajadorbbdd> results;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Trabajadorbbdd T";
+            Query query = session.createQuery(hql);
+            results = query.list();
+            if (results.isEmpty()) {
+                throw new ObjectNotFoundException("No hay ninguna empresa en la base de datos");
+            }
+            tx.commit();
+        } catch (ExceptionInInitializerError e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        }
+        return results;
+    }
 
     public boolean buscarTrabajador(Trabajadorbbdd trabajador) {
         TrabajadorDAO.getInstance();
