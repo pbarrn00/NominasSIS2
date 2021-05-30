@@ -356,100 +356,19 @@ public class Nomina implements java.io.Serializable {
             return false;
         }
         final Nomina other = (Nomina) obj;
-        if (this.idNomina != other.idNomina) {
-            return false;
-        }
         if (this.mes != other.mes) {
             return false;
         }
         if (this.anio != other.anio) {
             return false;
         }
-        if (this.numeroTrienios != other.numeroTrienios) {
-            return false;
-        }
         if (!Objects.equals(this.trabajadorbbdd, other.trabajadorbbdd)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeTrienios, other.importeTrienios)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeSalarioMes, other.importeSalarioMes)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeComplementoMes, other.importeComplementoMes)) {
-            return false;
-        }
-        if (!Objects.equals(this.valorProrrateo, other.valorProrrateo)) {
-            return false;
-        }
-        if (!Objects.equals(this.brutoAnual, other.brutoAnual)) {
-            return false;
-        }
-        if (!Objects.equals(this.irpf, other.irpf)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeIrpf, other.importeIrpf)) {
-            return false;
-        }
-        if (!Objects.equals(this.baseEmpresario, other.baseEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.seguridadSocialEmpresario, other.seguridadSocialEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeSeguridadSocialEmpresario, other.importeSeguridadSocialEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.desempleoEmpresario, other.desempleoEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeDesempleoEmpresario, other.importeDesempleoEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.formacionEmpresario, other.formacionEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeFormacionEmpresario, other.importeFormacionEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.accidentesTrabajoEmpresario, other.accidentesTrabajoEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeAccidentesTrabajoEmpresario, other.importeAccidentesTrabajoEmpresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.fogasaempresario, other.fogasaempresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeFogasaempresario, other.importeFogasaempresario)) {
-            return false;
-        }
-        if (!Objects.equals(this.seguridadSocialTrabajador, other.seguridadSocialTrabajador)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeSeguridadSocialTrabajador, other.importeSeguridadSocialTrabajador)) {
-            return false;
-        }
-        if (!Objects.equals(this.desempleoTrabajador, other.desempleoTrabajador)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeDesempleoTrabajador, other.importeDesempleoTrabajador)) {
-            return false;
-        }
-        if (!Objects.equals(this.formacionTrabajador, other.formacionTrabajador)) {
-            return false;
-        }
-        if (!Objects.equals(this.importeFormacionTrabajador, other.importeFormacionTrabajador)) {
             return false;
         }
         if (!Objects.equals(this.brutoNomina, other.brutoNomina)) {
             return false;
         }
         if (!Objects.equals(this.liquidoNomina, other.liquidoNomina)) {
-            return false;
-        }
-        if (!Objects.equals(this.costeTotalEmpresario, other.costeTotalEmpresario)) {
             return false;
         }
         return true;

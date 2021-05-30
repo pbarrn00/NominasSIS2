@@ -98,7 +98,7 @@ public class PracticaTres {
                     porcentajeFogasa, Utils.round2decimasl(fogasa), porcentajeSeguridadSocial, Utils.round2decimasl(seguridadSocial), porcentajeDesempleo, Utils.round2decimasl(desempleo), porcentajeFormacion, Utils.round2decimasl(formacion), Utils.round2decimasl(brutoMensual), Utils.round2decimasl(liquidoPercibir),
                     Utils.round2decimasl(costeTotal));
             listaDeNominas.add(nomina);
-            //printInfor(nomina, fch, "No", salarioCalculos);
+            printInfor(nomina, fch, "No", salarioCalculos);
             if (esExtra.equals("Sí")) {
                 salarioCalculos = 0.0;
                 seguridadSocial = salarioCalculos * (porcentajeSeguridadSocial / 100);
@@ -119,7 +119,7 @@ public class PracticaTres {
                     porcentajeFogasa, Utils.round2decimasl(fogasa), porcentajeSeguridadSocial, Utils.round2decimasl(seguridadSocial), porcentajeDesempleo, Utils.round2decimasl(desempleo), porcentajeFormacion, Utils.round2decimasl(formacion), Utils.round2decimasl(brutoMensual), Utils.round2decimasl(liquidoPercibir),
                     Utils.round2decimasl(costeTotal));
                 listaDeNominas.add(nominaExtra);
-                //printInfor(nominaExtra, fch, esExtra, 0.0);
+                printInfor(nominaExtra, fch, esExtra, 0.0);
             }
         }
         return listaDeNominas;

@@ -200,12 +200,6 @@ public class Trabajadorbbdd implements java.io.Serializable {
             return false;
         }
         final Trabajadorbbdd other = (Trabajadorbbdd) obj;
-        if (this.idTrabajador != other.idTrabajador) {
-            return false;
-        }
-        if (this.prorrateo != other.prorrateo) {
-            return false;
-        }
         if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
@@ -218,34 +212,7 @@ public class Trabajadorbbdd implements java.io.Serializable {
         if (!Objects.equals(this.nifnie, other.nifnie)) {
             return false;
         }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        if (!Objects.equals(this.codigoCuenta, other.codigoCuenta)) {
-            return false;
-        }
-        if (!Objects.equals(this.iban, other.iban)) {
-            return false;
-        }
-        if (!Objects.equals(this.nombreEmpresa, other.nombreEmpresa)) {
-            return false;
-        }
-        if (!Objects.equals(this.cifEmpresa, other.cifEmpresa)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoria, other.categoria)) {
-            return false;
-        }
-        if (!Objects.equals(this.categorias, other.categorias)) {
-            return false;
-        }
-        if (!Objects.equals(this.empresas, other.empresas)) {
-            return false;
-        }
         if (!Objects.equals(this.fechaAlta, other.fechaAlta)) {
-            return false;
-        }
-        if (!Objects.equals(this.nominas, other.nominas)) {
             return false;
         }
         return true;

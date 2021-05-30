@@ -85,8 +85,8 @@ public class EmpresasDAO {
     }
     
     public List getListaEmpresasBD() throws ObjectNotFoundException, ExceptionInInitializerError {
-        EmpresasDAO.getInstance();;
-        List<Trabajadorbbdd> results;
+        EmpresasDAO.getInstance();
+        List<Empresas> results;
         try {
             tx = session.beginTransaction();
             String hql = "FROM Empresas E";
@@ -103,6 +103,27 @@ public class EmpresasDAO {
             throw e;
         }
         return results;
+    }
+    
+    public int getContadorID() throws ObjectNotFoundException, ExceptionInInitializerError {
+        EmpresasDAO.getInstance();
+        List<Empresas> results;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Empresas E";
+            Query query = session.createQuery(hql);
+            results = query.list();            
+            tx.commit();
+            if (results.isEmpty()) {
+                return 23;
+            }
+        } catch (ExceptionInInitializerError e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        }
+        return results.get(results.size()-1).getIdEmpresa();
     }
 
     public boolean existeEmpresa(Empresas e) {

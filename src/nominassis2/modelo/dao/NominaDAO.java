@@ -17,11 +17,11 @@ import org.hibernate.Transaction;
 
 /**
  *
- * @author Pablo Javier Barrio Navarro
- *         Pablo de la Era Martínez
- *         Diego Fernández Velasco <3
+ * @author Pablo Javier Barrio Navarro Pablo de la Era Martínez Diego Fernández
+ * Velasco <3
  */
 public class NominaDAO {
+
     private static NominaDAO instancia = null;
     SessionFactory sf = null;
     Session session = null;
@@ -40,7 +40,7 @@ public class NominaDAO {
     }
 
     public void add(LinkedList<Nomina> listaNominas) {
-        
+
     }
 
     public void addDB(Nomina nomina) {
@@ -52,43 +52,48 @@ public class NominaDAO {
         } catch (Exception e) {
             tx.rollback();
             System.out.println(e.getMessage());
-        } 
+        }
     }
 
     public boolean buscarNomina(Nomina nomina) {
-       NominaDAO.getInstance();
-        Query query = session.createQuery("Select N FROM Nomina N WHERE (N.mes=:param1) AND (N.anio=:param2) AND (N.brutoNomina=:param4) AND (N.liquidoNomina=:param5)");
+        NominaDAO.getInstance();
+        Query query = session.createQuery("Select N FROM Nomina N WHERE (N.mes=:param1) AND (N.anio=:param2) AND (N.brutoNomina=:param4)");
         query.setParameter("param1", nomina.getMes());
         query.setParameter("param2", nomina.getAnio());
-        //query.setParameter("param3", nomina.getTrabajadorbbdd().getIdTrabajador());
         query.setParameter("param4", nomina.getBrutoNomina());
-        query.setParameter("param5", nomina.getLiquidoNomina());
         List<Nomina> l = query.list();
         if (!l.isEmpty()) {
-            nomina.setIdNomina(l.get(0).getIdNomina());
-            return true;
+            for (Nomina nominaAux : l) {
+                if (nominaAux.getTrabajadorbbdd().getIdTrabajador() == nomina.getTrabajadorbbdd().getIdTrabajador()) {
+                    if (nominaAux.getLiquidoNomina().equals(nomina.getLiquidoNomina())) {
+                        nomina.setIdNomina(nominaAux.getIdNomina());
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         return false;
     }
-    
+
     public void update(Nomina nomina) {
         NominaDAO.getInstance();
         Nomina aux = getNominaBD(nomina.getIdNomina());
-        if(nomina.equals(aux)) {
+        if (nomina.equals(aux)) {
             tx = session.beginTransaction();
             session.saveOrUpdate(actualizarNomina(nomina, aux));
             tx.commit();
         }
     }
-    
-    private Nomina getNominaBD(int id){
+
+    private Nomina getNominaBD(int id) {
         CategoriaDAO.getInstance();
         Query query = session.createQuery("Select n from Nomina n where n.idNomina=:param1");
         query.setParameter("param1", id);
         List<Nomina> l = query.list();
         return l.get(0);
     }
-    
+
     private Nomina actualizarNomina(Nomina nomina, Nomina aux) {
         aux.setNumeroTrienios(nomina.getNumeroTrienios());
         aux.setImporteTrienios(nomina.getImporteTrienios());
@@ -119,8 +124,30 @@ public class NominaDAO {
         aux.setTrabajadorbbdd(aux.getTrabajadorbbdd());
         return aux;
     }
-    
+
     public void cerrarSesion() {
         session.close();
-    }  
+    }
+
+    public int getIdNomina() {
+        NominaDAO.getInstance();
+        List<Nomina> results;
+        try {
+            tx = session.beginTransaction();
+            String hql = "FROM Nomina N";
+            Query query = session.createQuery(hql);
+            results = query.list();
+            tx.commit();
+        } catch (ExceptionInInitializerError e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        }
+        if (results.isEmpty()) {
+            return 0;
+        } else {
+            return results.get(results.size() - 1).getIdNomina();
+        }
+    }
 }

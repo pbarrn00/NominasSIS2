@@ -137,7 +137,13 @@ public class Logic {
     public List<Trabajadorbbdd> getTrabajadores() throws ObjectNotFoundException{
         return TrabajadorDAO.getInstance().getListaTrabajadorBD();
     }
-    
-    
+
+    public int getIdNomina() {
+        return NominaDAO.getInstance().getIdNomina();
+    }
+
+    public int getContadorIDEmpresa() throws ObjectNotFoundException {
+        return EmpresasDAO.getInstance().getContadorID();
+    }
 
 }

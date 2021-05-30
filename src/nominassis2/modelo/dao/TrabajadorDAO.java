@@ -184,4 +184,5 @@ public class TrabajadorDAO {
     public void cerrarSesion() {
         session.close();
     }
+
 }

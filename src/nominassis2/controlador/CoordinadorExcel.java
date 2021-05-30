@@ -89,8 +89,14 @@ public class CoordinadorExcel {
                 if (celda != null && !celda.toString().equals("")) {
                     if (nifs.contains(celda.toString())) {
                         //Reportar error en XML si esta repetido
-                        creador.createTrabajadoresXML(fila.getCell(6).toString(), fila.getCell(4).toString(),
-                                 fila.getCell(5).toString(), fila.getCell(0).toString(), fila.getCell(2).toString(), fila.getRowNum() + 1);
+                        if (fila.getCell(5) == null) {
+                            creador.createTrabajadoresXML(fila.getCell(6).toString(), fila.getCell(4).toString(),
+                                 "", fila.getCell(0).toString(), fila.getCell(2).toString(), fila.getRowNum() + 1);
+                        }else{
+                          creador.createTrabajadoresXML(fila.getCell(6).toString(), fila.getCell(4).toString(),
+                                 fila.getCell(5).toString(), fila.getCell(0).toString(), fila.getCell(2).toString(), fila.getRowNum() + 1);  
+                        }
+                        
                     } else {
                         nifs.add(celda.toString());
                     }
@@ -238,7 +244,7 @@ public class CoordinadorExcel {
         while (filaIterador.hasNext()) {
             fila = filaIterador.next();
             //TODO DUDA CELDA CREADA PERO VACIA
-            if (fila.getCell(3).getDateCellValue() != null) {
+            if (fila.getCell(3) != null) {
                 Date fechaAlta = fila.getCell(3).getDateCellValue();
                 if (fechaAlta.before(fecha)) {
                     trabajadores.add(new Trabajadorbbdd(fila.getCell(0).toString(), fila.getCell(1).toString(), fila.getCell(2).toString(), fila.getCell(3).getDateCellValue(),
